@@ -2,37 +2,63 @@ package com.course.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.course.model.UserVo;
 import com.course.service.LoginService;
 
 @Controller
 public class LoginController {
-	
-	@Autowired
-	private LoginService loginService;
-	
-	@GetMapping("/")
-	public String home() {
-		return "login";
-				 	
-	}
 
-	@GetMapping("/login")
-	public String tologin() {
-		return "login";
-				
-	}
-	
-	@PostMapping("/login")
-	public String loginAction(@RequestParam String username,@RequestParam String password) {
-		if(loginService.checkLogin(username, password)) {
-		return "loginSuccess";
-		}else {
-			return "loginFail";
-		}
-	}
-	
+    @Autowired
+    private LoginService loginService;
+
+    // 首頁轉導到 login
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/login";
+    }
+
+    // 顯示登入頁
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
+    // 處理登入
+    @PostMapping("/login")
+    public String loginAction(@ModelAttribute UserVo userVo) {
+    	
+    	boolean isLogin = loginService.checkLogin(userVo);
+    	
+    	if(isLogin) {
+    		return "loginSuccess";
+    	}else {
+    		return "loginFail";
+    	}
+    }
+
+    // 顯示註冊頁
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
+
+    // 處理註冊
+    @PostMapping("/register")
+    public String register(@ModelAttribute UserVo userVo,Model model) {
+
+        boolean isRegister = loginService.registerUser(userVo);
+
+        if (isRegister) {
+            return "redirect:/login?Success";
+        } else {
+        	
+        	model.addAttribute("error","此帳號已註冊過");
+            return "register";
+        }
+    }
 }
