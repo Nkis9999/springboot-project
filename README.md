@@ -1,49 +1,51 @@
-# 🔐 Spring Boot Member Management System
+# 🔐 Spring Boot 會員管理系統
 
-## Overview
-This project is a simple Member Management System built using **Spring Boot**, **Spring Security**, and **MySQL**.
+## 專案介紹
 
-The system allows users to:
+本專案為一個使用 **Spring Boot + MySQL** 開發的簡易會員管理系統。
 
-- Register an account
-- Login securely
-- Store encrypted passwords
-- Access protected pages
+系統提供：
 
-This project demonstrates a complete **Spring Boot MVC architecture**.
+- 會員註冊功能
+- 會員登入功能
+- 密碼加密儲存
+- 安全登入驗證
+
+本系統採用 **Spring Boot MVC 架構設計**，示範完整 Web 系統開發流程。
 
 ---
 
-## Features
+## 系統功能
 
-### Member Registration
-Users can register with:
+### 會員註冊
+
+使用者可以註冊帳號：
 
 - Username
 - Password
 - Email
 
-Data is stored in MySQL database.
+會員資料會儲存至 MySQL 資料庫。
 
 ---
 
-### Member Login
+### 會員登入
 
-Login verification includes:
+登入流程：
 
-1. Query user from database
-2. Verify password using BCrypt
-3. Login success
+1. 從資料庫查詢使用者
+2. 使用 BCrypt 比對密碼
+3. 驗證成功後登入系統
 
-Example encrypted password:
+加密密碼範例：
 
 $2a$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ---
 
-## Architecture
+## 系統架構
 
-Browser
+瀏覽器
    ↓
 Controller
    ↓
@@ -51,13 +53,13 @@ Service
    ↓
 Repository
    ↓
-MySQL
+MySQL資料庫
 
 ---
 
-## Technologies
+## 使用技術
 
-### Backend
+### 後端技術
 
 - Java
 - Spring Boot
@@ -66,19 +68,23 @@ MySQL
 - Hibernate
 - Lombok
 
-### Frontend
+---
+
+### 前端技術
 
 - HTML
 - Thymeleaf
 - Bootstrap
 
-### Database
+---
+
+### 資料庫
 
 - MySQL
 
 ---
 
-## Project Structure
+## 專案結構
 
 src/main/java
 
@@ -107,15 +113,15 @@ templates/
 
 ---
 
-## Setup
+## 安裝方式
 
-### 1 Clone Project
+### 1 Clone 專案
 
 git clone https://github.com/yourname/member-system.git
 
 ---
 
-### 2 Create Database
+### 2 建立資料庫
 
 CREATE DATABASE course;
 
@@ -129,7 +135,7 @@ CREATE TABLE users (
 
 ---
 
-### 3 application.properties
+### 3 設定 application.properties
 
 spring.datasource.url=jdbc:mysql://localhost:3306/course
 spring.datasource.username=root
@@ -139,35 +145,38 @@ spring.jpa.hibernate.ddl-auto=update
 
 ---
 
-### 4 Run Project
+### 4 執行專案
+
+開啟瀏覽器：
 
 http://localhost:8080/login
 
 ---
 
-## Security
+## 安全設計
 
-Passwords are encrypted using:
+系統使用：
 
 BCryptPasswordEncoder
 
-Passwords are never stored in plain text.
+進行密碼加密。
+
+密碼不會以明文儲存在資料庫中。
 
 ---
 
-## Future Improvements
+## 未來擴充功能
 
-- Edit Profile
-- Change Password
-- Pagination
-- Search Function
-- Member Statistics
+- 個人資料修改
+- 修改密碼
+- 分頁功能
+- 搜尋功能
+- 會員統計
 
 ---
 
-## Author
+## 作者
 
-Student Spring Boot Project
+Spring Boot 學習專案
 
 2026
-
