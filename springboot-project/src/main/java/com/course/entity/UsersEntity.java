@@ -26,8 +26,7 @@ public class UsersEntity {
 	@Column(name = "img_name")
 	private String imgName;
 
-//	public Object getPassword() {
-//		return null;
-	}
+
+}
 
 

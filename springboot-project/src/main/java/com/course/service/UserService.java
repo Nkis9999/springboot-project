@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.course.entity.UsersEntity;
-import com.course.model.UserEntity;
 import com.course.repository.UsersRepository;
 
 @Service

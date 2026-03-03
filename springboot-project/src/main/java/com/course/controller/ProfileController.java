@@ -1,5 +1,8 @@
 package com.course.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -7,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.course.entity.UsersEntity;
 import com.course.repository.UsersRepository;
@@ -42,23 +46,59 @@ public class ProfileController {
 	}
 	
 	@PostMapping("/updateProfile")
-	public String updateProfile(@RequestParam String username ,@RequestParam String email ,HttpSession session) {
-		
-		// 取得目前登入者
-		String loginUser = (String)session.getAttribute("loginUser");
-		
-		UsersEntity user = usersRepository.findByUsername(loginUser);
-		
-		// 更新資料
-		user.setUsername(username);
-		user.setEmail(email);
-		
-		usersRepository.save(user);
-		
-		// 更新 session
-		session.setAttribute("loginUser", username);
-		return "redirect:/profile?success=true";
+	public String updateProfile(
+	        @RequestParam String username,
+	        @RequestParam String email,
+	        @RequestParam("photo") MultipartFile photo,
+	        HttpSession session) throws IOException {
+
+	    String loginUser =
+	        (String)session.getAttribute("loginUser");
+
+	    UsersEntity user =
+	        usersRepository.findByUsername(loginUser);
+
+	    user.setUsername(username);
+	    user.setEmail(email);
+
+	    // 上傳圖片
+	    if(photo != null && !photo.isEmpty()){
+
+	        String fileName =
+	            photo.getOriginalFilename();
+
+	        String path = "C:\\upload\\";
+
+	        File dir = new File(path);
+
+	        if(!dir.exists()){
+	            dir.mkdirs();
+	        }
+
+	        photo.transferTo(
+	            new File(path + fileName));
+
+	        user.setImgName(fileName);
+	    }
+
+	    usersRepository.save(user);
+
+	    session.setAttribute("loginUser",
+	            username);
+
+	    return "redirect:/profile?success=true";
 	}
+		
+//		// 更新資料
+//		user.setUsername(username);
+//		user.setEmail(email);
+//		
+//		usersRepository.save(user);
+//		
+//		// 更新 session
+//		session.setAttribute("loginUser", username);
+//		return "redirect:/profile?success=true";
+//	}
 	
 	@PostMapping("/changePassword")
 	public String changePassword(

@@ -49,7 +49,10 @@ public class LoginController {
         if(result){
         	
         	session.setAttribute("loginUser" , userVo.getUsername());
-            return "loginSuccess";
+            
+        	session.setAttribute("loginTime", new java.util.Date());
+        	
+        	return "loginSuccess";
         }
 
         return "redirect:/login?error";

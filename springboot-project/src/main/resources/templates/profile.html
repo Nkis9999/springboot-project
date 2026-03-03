@@ -9,60 +9,112 @@
 
 <h2>個人資料</h2>
 
-<form th:action="@{/updateProfile}" method="post">
+<!-- 左右排版 -->
+<div style="display:flex; gap:80px; align-items:flex-start;">
 
-帳號：
-<input type="text"
-       name="username"
-       th:value="${user.username}"
-       readonly>
+    <!-- 左邊：資料表單 -->
+    <div>
 
-<br><br>
+        <form th:action="@{/updateProfile}"
+              method="post"
+              enctype="multipart/form-data">
 
-Email：
-<input type="text"
-       name="email"
-       th:value="${user.email}">
+            帳號：
+            <input type="text"
+                   name="username"
+                   th:value="${user.username}"
+                   readonly>
 
-<button type="submit">修改資料</button>
+            <br><br>
 
-<p th:if="${param.success}" style="color: green;" id="msg">修改資料成功!</p>
-</form>
+            Email：
+            <input type="text"
+                   name="email"
+                   th:value="${user.email}">
 
-<script>setTimeout(function(){
-document.getElementById("msg").style.display="none";
-} , 3000);</script>
+            <br><br>
+
+            頭像：
+            <input type="file" name="photo">
+
+            <br><br>
+
+            <button type="submit">
+                修改資料
+            </button>
+
+            <p th:if="${param.success}"
+               style="color: green;"
+               id="msg">
+               修改資料成功!
+            </p>
+
+        </form>
+
+    </div>
+
+
+    <!-- 右邊：會員頭像 -->
+    <div>
+
+        <h3>會員頭像</h3>
+
+        <img th:if="${user.imgName != null}"
+             th:src="@{'/upload/' + ${user.imgName}}"
+             width="200"
+             style="border:1px solid gray;
+                    padding:5px;
+                    border-radius:10px;">
+
+    </div>
+
+</div>
+
+
+<script>
+setTimeout(function(){
+    let msg = document.getElementById("msg");
+    if(msg){
+        msg.style.display="none";
+    }
+} , 3000);
+</script>
+
 
 <br><br>
 <hr>
-<h4 class="mt-4">修改密碼</h4>
+
+<h4>修改密碼</h4>
 
 <form th:action="@{/changePassword}" method="post">
 
-    <div class="mb-3">
-        <label>舊密碼</label>
-        <input type="password" name="oldPassword"
-               class="form-control" required>
-    </div>
+舊密碼：
+<input type="password"
+       name="oldPassword"
+       required>
 
-    <div class="mb-3">
-        <label>新密碼</label>
-        <input type="password" name="newPassword"
-               class="form-control" required>
-    </div>
+<br><br>
 
-    <div class="mb-3">
-        <label>確認新密碼</label>
-        <input type="password" name="confirmPassword"
-               class="form-control" required>
-    </div>
+新密碼：
+<input type="password"
+       name="newPassword"
+       required>
 
-    <button type="submit"
-            class="btn btn-warning">
-        修改密碼
-    </button>
+<br><br>
+
+確認新密碼：
+<input type="password"
+       name="confirmPassword"
+       required>
+
+<br><br>
+
+<button type="submit">
+修改密碼
+</button>
 
 </form>
+
 
 <!-- 成功提示 -->
 <div th:if="${success}" style="color:green">
@@ -74,9 +126,12 @@ document.getElementById("msg").style.display="none";
     <span th:text="${error}"></span>
 </div>
 
+
 <br><br>
 
-<a href="/loginSuccess"><button>回到登入成功頁</button></a>
+<a href="/loginSuccess">
+<button>回到登入成功頁</button>
+</a>
 
 </body>
 </html>

@@ -20,9 +20,11 @@ public class UserEntity {
 	@Column(unique = true)
 	private String username;
 	
-	@Column(length=255)
+	@Column(length = 255)
 	private String password;
 	
 	private String email;
+	
+	private String photo;
 	
 }
