@@ -32,7 +32,7 @@
     </div>
 
     <!-- 登出成功 -->
-    <div th:if="${param.logout}" class="alert alert-success">
+    <div th:if="${param.logout}" id="logoutMsg" class="alert alert-success">
         已成功登出
     </div>
 
@@ -60,6 +60,25 @@
         </a>
     </div>
 </div>
+
+<script>
+
+setTimeout(function(){
+
+    let msg = document.getElementById("logoutMsg");
+
+    if(msg){
+        msg.style.transition="opacity 0.5s";
+        msg.style.opacity="0";
+
+        setTimeout(function(){
+            msg.remove();
+        },500);
+    }
+
+},2000);
+
+</script>
 
 </body>
 </html>
