@@ -1,6 +1,7 @@
 package com.course.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,9 @@ public class LoginController {
     
     @Autowired
     private UsersRepository usersRepository;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // 首頁轉導到 login
     @GetMapping("/")
@@ -55,18 +59,58 @@ public class LoginController {
     public String loginSuccess() {
     	return "loginSuccess";
     }
-//    @PostMapping("/login")
-//    public String loginAction(@ModelAttribute UserVo userVo) {
-//    	
-//    	boolean isLogin = loginService.checkLogin(userVo);
-//    	
-//    	if(isLogin) {
-//    		return "redirect:/users";
-//    	}else {
-//    		return "redirect:/login";
-//    	}
-//    }
 
+    // 忘記密碼
+    @GetMapping("/forgotPassword")
+    public String forgotPasswordPage() {
+    	return "forgotPassword";
+    }
+    
+    @PostMapping("/")
+    public String forgotPassword(String username , Model model) {
+    	
+    	UsersEntity user = usersRepository.findByUsername(username);
+    	
+    	if(user == null) {
+    		
+    		model.addAttribute("error" , "找不到此帳號");
+    		
+    		return "forgotPassword";
+    	}
+    		
+    		model.addAttribute("username" , username);
+    	
+    	return "resetPassword";
+    }
+    
+    @PostMapping("/resetPassword")
+    public String resetPassword(
+    		String username,
+    		String newPassword,
+    		String confirmPassword,
+    		Model model) {
+    	
+    	UsersEntity user = usersRepository.findByUsername(username);
+    	
+    	if(!newPassword.equals(confirmPassword)) {
+    		
+    		model.addAttribute("error" , "兩次密碼不一致");
+    		
+    		model.addAttribute("username" , username);
+    		
+    		return "resetPassword";
+    		
+    	}
+    	
+    	 user.setPassword(passwordEncoder.encode(newPassword));
+
+    	
+    		usersRepository.save(user);
+    		
+    	return "redirect:/login?resetSuccess=true";
+    }
+    
+    
     // 顯示註冊頁
     @GetMapping("/register")
     public String registerPage() {
@@ -87,20 +131,6 @@ public class LoginController {
             return "register";
         }
     }
-    
-    // 建立個人資料頁
-//    @GetMapping("/profile")
-//    public String profile(HttpSession session , Model model) {
-//    	
-//    	String username = (String)session.getAttribute("loginUser");
-//    	
-//    	UsersEntity user = usersRepository.findByUsername(username);
-//    	
-//    	model.addAttribute("user" , user);
-//    	
-//    	return "profile";
-//    	
-//    }
     
     // 更新資料功能
     public String updateProfile(UserVo userVo , HttpSession session) {

@@ -66,6 +66,14 @@
             還沒有帳號？立即註冊
         </a>
     </div>
+	<div class="text-center mt-2">
+		<a th:href="@{/forgotPassword}">忘記密碼?</a>
+	</div>
+	<div th:if="${param.resetSuccess}"
+	     class="alert alert-success">
+	 密碼重設成功
+	</div>
+	
 </div>
 
 <script>
