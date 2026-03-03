@@ -1,28 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
-<title>會員首頁</title>
+<title>登入成功</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<style>
+
+body{
+height:100vh;
+background:linear-gradient(135deg,#4e73df,#1cc88a);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card-box{
+width:420px;
+border-radius:15px;
+}
+
+.timer{
+font-size:24px;
+font-weight:bold;
+color:#1cc88a;
+}
+
+</style>
+
 </head>
 
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
+<div class="card shadow-lg p-4 card-box text-center">
 
-<div class="card shadow p-4">
+<h3 class="mb-3">登入成功</h3>
 
-<h2 class="text-center mb-4">
+<p>
 
-會員系統首頁
+登入時間
 
-</h2>
+<br>
 
+<span id="timer" class="timer"></span>
 
-<p class="text-center">
+</p>
+
+<hr>
+
+<p>
 
 歡迎登入：
 
@@ -30,53 +58,23 @@
 
 </p>
 
+<br>
 
-<p class="text-center">
-
-登入時間：
-
-<span id="timer"></span>
-
-</p>
-
-
-<hr>
-
-
-<div class="text-center">
-
-<a href="/profile" class="btn btn-primary m-2">
-
+<a href="/profile" class="btn btn-primary w-100 mb-2">
 個人資料
-
 </a>
 
-
-<a href="/users" class="btn btn-success m-2">
-
+<a href="/users" class="btn btn-info w-100 mb-2">
 會員列表
-
 </a>
-
-</div>
-
-
-<div class="text-center mt-3">
 
 <form action="/logout" method="post">
 
-<button class="btn btn-danger">
-
+<button class="btn btn-danger w-100">
 登出
-
 </button>
 
 </form>
-
-</div>
-
-
-</div>
 
 </div>
 
