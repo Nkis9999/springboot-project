@@ -102,12 +102,11 @@ public class ProfileController {
 
 	    usersRepository.save(user);
 
-	    model.addAttribute("success",
-	            "密碼修改成功!");
+	    // 清除登入狀態
+	    session.invalidate();
 
-	    model.addAttribute("user", user);
-
-	    return "profile";
+	    // 跳回登入頁並帶成功訊息
+	    return "redirect:/login?pwdSuccess=true";
 	}
 	
 }
