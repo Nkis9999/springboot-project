@@ -111,6 +111,64 @@ public class LoginController {
     	return "redirect:/login?resetSuccess=true";
     }
     
+    // 刪除帳號 API
+    @PostMapping("/deleteUser")
+    public String deleteUser(Long id , Authentication auth) {
+    	
+    	UsersEntity loginUser = usersRepository.findByUsername(auth.getName());
+    	
+    	UsersEntity targetUser = usersRepository.findById(id).orElse(null);
+    	
+    	if(targetUser == null) {
+    		return "redirect:/users";
+    	}
+    	
+	// ADMIN 不能刪除 ADMIN
+	if(loginUser.getRole().equals("ADMIN") && !targetUser.getRole().equals("USER")) {
+		
+		return "redirect:/users?noAuth";
+	}
+	
+	usersRepository.delete(targetUser);
+	
+	return "redirect:/users?deleteSuccess";
+}
+    
+    // 升級 ADMIN（SUPER_ADMIN限定）
+    @PostMapping("/makeAdmin")
+    public String makeAdmin(Long id) {
+    	
+    	UsersEntity user = usersRepository.findById(id).orElse(null);
+    	
+    	if(user != null) {
+    		
+    		user.setRole("ADMIN");
+    		
+    		usersRepository.save(user);
+		
+	}
+	
+	return "redirect:/users";
+}
+
+    // 降級 ADMIN（SUPER_ADMIN限定）
+    @PostMapping("/removeAdmin")
+    public String removeAdmin(Long id) {
+    	
+    	UsersEntity user = usersRepository.findById(id).orElse(null);
+    	
+    	if(user != null) {
+    		
+    		user.setRole("USER");
+    		
+    		usersRepository.save(user);
+    		
+    	}
+    	
+    	return "redirect:/users";
+    }
+	    
+    
     
     // 顯示註冊頁
     @GetMapping("/register")

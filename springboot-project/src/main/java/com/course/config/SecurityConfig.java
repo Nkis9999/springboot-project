@@ -55,9 +55,13 @@ public class SecurityConfig {
 
 
     	    // ===== SUPER ADMIN =====
+    	    .requestMatchers("/deleteUser")
+    	    .hasAnyRole("ADMIN","SUPER_ADMIN")
+
     	    .requestMatchers(
-	            "/deleteUser",
-	            "/admin/**"
+    	            "/makeAdmin",
+    	            "/removeAdmin",
+    	            "/admin/**"
     	    ).hasRole("SUPER_ADMIN")
 
 

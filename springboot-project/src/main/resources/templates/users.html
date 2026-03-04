@@ -2,9 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>會員列表</title>
+<title>會員管理系統</title>
 
-<!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
 rel="stylesheet">
 
@@ -13,91 +12,371 @@ rel="stylesheet">
 body{
 background: linear-gradient(135deg,#4e73df,#1cc88a);
 min-height:100vh;
-padding-top:50px;
+padding-top:60px;
 }
 
+
+/* 主卡片 */
 .card-box{
-width:800px;
+width:950px;
 margin:auto;
-border-radius:15px;
+border-radius:20px;
 }
+
+
+/* 標題 */
+
+.header-title{
+font-weight:600;
+letter-spacing:3px;
+margin-bottom:30px;
+text-align:center;
+}
+
+
+/* 表格置中 */
+
+.table td, .table th{
+vertical-align:middle;
+text-align:center;
+}
+
+
+
+/* ===== 工具列 ===== */
+
+.toolbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+
+
+/* ===== 回主頁按鈕 ===== */
+
+.home-btn{
+
+background:#6c757d;
+color:white;
+
+height:45px;
+width:150px;
+
+font-size:18px;
+font-weight:500;
+
+border-radius:8px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-decoration:none;
+
+}
+
+.home-btn:hover{
+
+background:#5a6268;
+color:white;
+
+}
+
+
+
+/* ===== 搜尋區 ===== */
+
+.search-area{
+
+display:flex;
+align-items:center;
+
+}
+
+
+
+/* 搜尋輸入框 */
+
+.search-input{
+
+height:45px;
+width:260px;
+
+font-size:16px;
+
+border-radius:8px;
+
+margin-right:10px;
+
+}
+
+
+
+/* 搜尋按鈕 */
+
+.search-btn{
+
+height:45px;
+width:90px;
+
+font-size:18px;
+
+border-radius:8px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+}
+
+
+
+/* 操作按鈕 */
+
+.btn-action{
+min-width:90px;
+margin:2px;
+}
+
+
+
+/* 下方資訊 */
+
+.footer-bar{
+margin-top:20px;
+font-size:15px;
+}
+
 
 </style>
 
 </head>
 
+
 <body>
 
-<div class="card shadow-lg p-4 card-box">
-
-<h3 class="text-center mb-4">會員列表</h3>
 
 
-<!-- 回登入成功頁 -->
-<div class="mb-3">
+<div class="card shadow-lg card-box">
 
-<a href="/loginSuccess" class="btn btn-secondary">
+<div class="card-body p-4">
 
-← 回登入成功頁
+
+<h3 class="header-title">
+
+會員管理系統
+
+</h3>
+
+
+
+<!-- 工具列 -->
+
+<div class="toolbar">
+
+
+<!-- 回主頁 -->
+
+<a href="/loginSuccess"
+
+class="home-btn">
+
+← 回主頁
 
 </a>
 
-</div>
 
 
 
 <!-- 搜尋 -->
-<form action="/users" method="get"
-class="row g-2 mb-3">
 
-<div class="col">
+<form action="/users"
+method="get"
+class="search-area">
+
 
 <input type="text"
+
 name="keyword"
+
 th:value="${keyword}"
-class="form-control"
+
+class="form-control search-input"
+
 placeholder="輸入帳號搜尋">
 
-</div>
 
-<div class="col-auto">
 
 <button type="submit"
-class="btn btn-primary">
+
+class="btn btn-primary search-btn">
 
 搜尋
 
 </button>
 
-</div>
 
 </form>
+
+
+</div>
+
 
 
 
 <!-- 表格 -->
 
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover table-bordered">
+
 
 <thead class="table-dark">
 
 <tr>
-<th>ID</th>
-<th>帳號</th>
-<th>Email</th>
+
+<th style="width:80px">
+
+ID
+
+</th>
+
+
+<th style="width:200px">
+
+帳號
+
+</th>
+
+
+<th>
+
+Email
+
+</th>
+
+
+<th style="width:300px">
+
+操作
+
+</th>
+
+
 </tr>
 
 </thead>
+
+
 
 <tbody>
 
 <tr th:each="user : ${users}">
 
+
 <td th:text="${user.id}"></td>
+
 
 <td th:text="${user.username}"></td>
 
+
 <td th:text="${user.email}"></td>
+
+
+
+<td>
+
+
+<!-- 刪除 -->
+
+<form action="/deleteUser"
+
+method="post"
+
+style="display:inline;">
+
+
+<input type="hidden"
+
+name="id"
+
+th:value="${user.id}">
+
+
+
+<button class="btn btn-danger btn-sm btn-action">
+
+刪除
+
+</button>
+
+
+</form>
+
+
+
+
+<!-- SUPER ADMIN -->
+
+<span th:if="${role=='SUPER_ADMIN'}">
+
+
+
+<form action="/makeAdmin"
+
+method="post"
+
+style="display:inline;">
+
+
+<input type="hidden"
+
+name="id"
+
+th:value="${user.id}">
+
+
+<button class="btn btn-warning btn-sm btn-action">
+
+設為ADMIN
+
+</button>
+
+
+</form>
+
+
+
+<form action="/removeAdmin"
+
+method="post"
+
+style="display:inline;">
+
+
+<input type="hidden"
+
+name="id"
+
+th:value="${user.id}">
+
+
+<button class="btn btn-dark btn-sm btn-action">
+
+取消ADMIN
+
+</button>
+
+
+</form>
+
+
+</span>
+
+
+
+</td>
+
 
 </tr>
 
@@ -107,54 +386,78 @@ class="btn btn-primary">
 
 
 
-<!-- 總數 -->
 
-<div class="mb-3">
+<!-- 下方資訊 -->
+
+
+<div class="row footer-bar align-items-center">
+
+
+<div class="col">
 
 會員總數：
 
-<span th:text="${total}"></span>
+<b th:text="${total}"></b>
 
 </div>
 
 
 
-<!-- 分頁 -->
+<div class="col text-center">
 
-<div class="d-flex justify-content-between">
-
-
-<div>
 
 <a th:if="${page > 0}"
+
 th:href="@{/users(page=${page-1},keyword=${keyword})}"
-class="btn btn-outline-primary">
+
+class="btn btn-outline-primary me-2">
 
 上一頁
 
 </a>
 
-</div>
 
 
+第 <b th:text="${page+1}"></b> 頁
 
-<div>
+
 
 <a th:if="${page < totalPages-1}"
+
 th:href="@{/users(page=${page+1},keyword=${keyword})}"
-class="btn btn-outline-primary">
+
+class="btn btn-outline-primary ms-2">
 
 下一頁
 
 </a>
 
+
+
+</div>
+
+
+
+<div class="col text-end">
+
+共
+
+<b th:text="${totalPages}"></b>
+
+頁
+
+</div>
+
+
+
+</div>
+
+
+
 </div>
 
 </div>
 
-
-
-</div>
 
 </body>
 </html>
