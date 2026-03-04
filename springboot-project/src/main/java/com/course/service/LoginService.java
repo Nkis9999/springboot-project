@@ -51,20 +51,6 @@ public class LoginService {
 	    return result;
 	}
 	
-	/**public boolean checkLogin(UserVo userVo) {
-		
-		UsersEntity user = usersRepository.findByUsername(userVo.getUsername());
-//		UsersEntity user = usersRepository.findByEmail(userVo.getEmail());
-		
-		
-		if(user == null) {
-				return false;
-			}
-		
-		return user.getPassword().equals(userVo.getPassword());
-//		return passwordEncoder.matches(userVo.getPassword(), user.getPassword());
-	}*/
-
 	// 註冊
 	public boolean registerUser(UserVo userVo) {
 
@@ -81,10 +67,11 @@ public class LoginService {
 	    UsersEntity user = new UsersEntity();
 	    
 	    user.setUsername(userVo.getUsername());
-	    user.setEmail(userVo.getEmail());
-
 	    // 密碼加密
 	    user.setPassword(passwordEncoder.encode(userVo.getPassword()));
+	    user.setEmail(userVo.getEmail());
+	    
+	    user.setRole("USER");
 	    usersRepository.save(user);
 	    System.out.println("Service:"+ userVo);
 	    System.out.println(passwordEncoder);

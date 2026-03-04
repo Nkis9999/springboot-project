@@ -26,7 +26,8 @@ public class UsersEntity {
 	@Column(name = "img_name")
 	private String imgName;
 
-
+	@Column(name = "role")
+	private String role;
 }
 
 
