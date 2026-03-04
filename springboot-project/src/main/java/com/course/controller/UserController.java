@@ -29,18 +29,6 @@ public class UserController {
             @RequestParam(defaultValue="0") int page,
             @RequestParam(required=false) String keyword){
     	
-    	// 取得登入者
-    	String username = (String)session.getAttribute("loginUser");
-    	
-    	UsersEntity loginUser = usersRepository.findByUsername(username);
-    	
-    	// 權限檢查
-    	if(loginUser == null || 
-    			(!loginUser.getRole().equals("ADMIN") && !loginUser.getRole().equals("SUPER_ADMIN"))) {
-    		
-    		return "redirect:/loginSuccess?noAuth";
-    	}
-    	
         Page<UsersEntity> userPage;
 
         if(keyword == null || keyword.isEmpty()){

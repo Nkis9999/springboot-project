@@ -25,28 +25,50 @@ public class SecurityConfig {
 	    http
 	    .authorizeHttpRequests(auth -> auth
 
-	        // 公開頁面
-	        .requestMatchers(
-	                "/",
-	                "/index",
-	                "/home",
-	                "/login",
-	                "/doLogin",
-	                "/register",
-	                "/registerPage",
-	                "/css/**",
-	                "/js/**",
-	                "/images/**"
-	        ).permitAll()
+	    	// 公開頁面(不需要登入)
+	    	 .requestMatchers(
+    			"/",
+    			"/login",
+    			"/doLogin",
+	    	    "/register",
+	    	    "/forgotPassword",
+	            "/resetPassword",
+	            "/css/**",
+	            "/js/**",
+	            "/images/**"
+    	     ).permitAll()
 
-	        // 其他需要登入
-	        .anyRequest().authenticated()
-	    )
+
+    	    // ===== USER以上 =====
+    	    .requestMatchers(
+	            "/loginSuccess",
+	            "/profile",
+	            "/updateProfile",
+	            "/changePassword"
+    	    ).hasAnyRole("USER","ADMIN","SUPER_ADMIN")
+
+
+    	    // ===== ADMIN以上 =====
+    	    .requestMatchers(
+	            "/users"
+    	    ).hasAnyRole("ADMIN","SUPER_ADMIN")
+
+
+    	    // ===== SUPER ADMIN =====
+    	    .requestMatchers(
+	            "/deleteUser",
+	            "/admin/**"
+    	    ).hasRole("SUPER_ADMIN")
+
+
+    	    // ===== 其他 =====
+    	    .anyRequest().authenticated()
+	    	)
 
 	    .formLogin(form -> form
 	            .loginPage("/login")
 	            .loginProcessingUrl("/doLogin")
-	            .defaultSuccessUrl("/loginSuccess")
+	            .defaultSuccessUrl("/loginSuccess" , true)
 	            .failureUrl("/login?error")
 	            .permitAll()
 	    )

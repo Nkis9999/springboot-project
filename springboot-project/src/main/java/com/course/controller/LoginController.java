@@ -40,27 +40,6 @@ public class LoginController {
         return "login";
     }
 
-    // 處理登入
-//    @PostMapping("/doLogin")
-//    public String login(UserVo userVo , HttpSession session){
-//
-//        boolean result =
-//            loginService.checkLogin(userVo);
-//
-//        if(result){
-//        	
-//        	UsersEntity user = usersRepository.findByUsername(userVo.getUsername());
-//        	
-//        	session.setAttribute("loginUser" , user);
-//            
-//        	session.setAttribute("loginTime", System.currentTimeMillis());
-//        	
-//        	return "redirect:/loginSuccess";
-//        }
-//
-//        return "redirect:/login?error";
-//    }
-    
     @GetMapping("/loginSuccess")
     public String loginSuccess(Model model,
                                Authentication authentication) {
@@ -69,6 +48,9 @@ public class LoginController {
 
         UsersEntity user =
                 usersRepository.findByUsername(username);
+        
+        //審查使用者權限
+        System.out.println("ROLE = " + user.getRole());
 
         model.addAttribute("username", username);
         model.addAttribute("role", user.getRole());
