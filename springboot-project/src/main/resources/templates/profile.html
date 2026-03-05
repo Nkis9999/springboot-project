@@ -108,9 +108,17 @@ margin-bottom:10px;
 <p>目前頭像</p>
 
 <img class="avatar mb-3"
-     th:src="${user.imgName != null} ? 
-        @{/upload/{img}(img=${user.imgName})} : 
-        @{/images/default-avatar.png}">
+     th:src="${user.avatarUrl}">
+
+<!--<img class="avatar mb-3"-->
+<!--     th:src="${user.imgName != null} ? -->
+<!--        @{/upload/{img}(img=${user.imgName})} : -->
+<!--        @{/images/default-avatar.png}">-->
+
+<!--<img class="avatar mb-3"-->
+<!--     th:src="${#strings.isEmpty(user.imgName)} ? -->
+<!--        @{/images/default-avatar.png} : -->
+<!--        @{/upload/{img}(img=${user.imgName})}">-->
 
 <!-- 新頭像預覽 (預設隱藏) -->
 

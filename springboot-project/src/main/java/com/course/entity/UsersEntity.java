@@ -31,7 +31,10 @@ public class UsersEntity {
 
 	public String getAvatarUrl(){
 
-	    if(imgName == null || imgName.isEmpty()){
+	    if(imgName == null 
+	        || imgName.isEmpty() 
+	        || imgName.equals("default-avatar.png")){
+
 	        return "/images/default-avatar.png";
 	    }
 

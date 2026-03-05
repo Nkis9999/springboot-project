@@ -47,10 +47,20 @@ margin:0 auto;
 
 <h3 class="mb-3">登入成功</h3>
 
-<img class="avatar"
-     th:src="${user.imgName != null} ? 
-        @{/upload/{img}(img=${user.imgName})} : 
-        @{/images/default-avatar.png}">
+<img class="avatar mb-3"
+     th:src="${user.avatarUrl}"
+     width="80"
+     height="80">
+
+<!--<img class="avatar"-->
+<!--     th:src="${user.imgName != null} ? -->
+<!--        @{/upload/{img}(img=${user.imgName})} : -->
+<!--        @{/images/default-avatar.png}">-->
+		
+<!--<img class="avatar"-->
+<!--     th:src="${#strings.isEmpty(user.imgName)} ? -->
+<!--        @{/images/default-avatar.png} : -->
+<!--        @{/upload/{img}(img=${user.imgName})}">-->
 
 <div th:if="${param.noAuth}" style="color:red; margin:10px; font-weight:bold;">
 	❌ 沒有權限存取此頁面
