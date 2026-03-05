@@ -64,9 +64,9 @@ margin-bottom:10px;
 <div class="col-md-8">
 
 <!-- 錯誤訊息顯示 -->
-<p style="color:red;" th:if="${errorMsg}">
+<div th:if="${errorMsg}" class="alert alert-danger">
     [[${errorMsg}]]
-</p>
+</div>
 	
 	
 <form th:action="@{/updateProfile}" method="post" enctype="multipart/form-data">

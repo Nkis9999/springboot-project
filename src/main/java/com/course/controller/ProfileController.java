@@ -138,7 +138,7 @@ public class ProfileController {
                 oldPassword,
                 user.getPassword())){
 
-            model.addAttribute("error",
+            model.addAttribute("errorMsg",
                     "舊密碼錯誤!");
 
             model.addAttribute("user", user);
@@ -149,7 +149,7 @@ public class ProfileController {
         // 驗證新密碼
         if(!newPassword.equals(confirmPassword)){
 
-            model.addAttribute("error",
+            model.addAttribute("errorMsg",
                     "兩次密碼不一致!");
 
             model.addAttribute("user", user);
