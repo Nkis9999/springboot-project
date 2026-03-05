@@ -63,6 +63,12 @@ margin-bottom:10px;
 <!-- 左邊資料 -->
 <div class="col-md-8">
 
+<!-- 錯誤訊息顯示 -->
+<p style="color:red;" th:if="${errorMsg}">
+    [[${errorMsg}]]
+</p>
+	
+	
 <form th:action="@{/updateProfile}" method="post" enctype="multipart/form-data">
 
 <div class="mb-3">
@@ -92,6 +98,11 @@ margin-bottom:10px;
        name="photo"
        accept="image/*"
        onchange="previewImage(event)">
+	   
+<div class="text-muted mt-2" style="font-size:14px;">
+	📌 僅支援 JPG / JPEG / PNG 格式，檔案大小不得超過 2MB
+</div>   
+   
 </div>
 
 <button class="btn btn-primary w-100 mt-3">
@@ -102,6 +113,20 @@ margin-bottom:10px;
 
 </div>
 
+<div th:if="${param.error=='size'}"
+     class="alert alert-danger">
+
+圖片不能超過 2MB
+
+</div>
+
+<div th:if="${param.error=='format'}"
+     class="alert alert-danger">
+
+只允許 JPG / PNG 格式
+
+</div>
+
 <!-- 右邊頭像 -->
 <div class="col-md-4 text-center">
 
@@ -109,16 +134,6 @@ margin-bottom:10px;
 
 <img class="avatar mb-3"
      th:src="${user.avatarUrl}">
-
-<!--<img class="avatar mb-3"-->
-<!--     th:src="${user.imgName != null} ? -->
-<!--        @{/upload/{img}(img=${user.imgName})} : -->
-<!--        @{/images/default-avatar.png}">-->
-
-<!--<img class="avatar mb-3"-->
-<!--     th:src="${#strings.isEmpty(user.imgName)} ? -->
-<!--        @{/images/default-avatar.png} : -->
-<!--        @{/upload/{img}(img=${user.imgName})}">-->
 
 <!-- 新頭像預覽 (預設隱藏) -->
 
@@ -199,26 +214,51 @@ class="avatar">
 </div>
 
 <script>
-	
-	function previewImage(event){
 
-	const file = event.target.files[0];
+function previewImage(event){
 
-	if(!file) return;
+    const file = event.target.files[0];
 
-	const reader = new FileReader();
+    if(!file) return;
 
-	reader.onload = function(){
+    // 允許格式
+    const allowedTypes = ["image/jpeg","image/png","image/jpg"];
 
-	document.getElementById("avatarPreview").src = reader.result;
+    // 檢查格式
+    if(!allowedTypes.includes(file.type)){
 
-	document.getElementById("previewBlock").style.display = "block";
+        alert("只允許 JPG / JPEG / PNG 格式");
 
-	}
+        event.target.value = "";
 
-	reader.readAsDataURL(file);
+        return;
+    }
 
-	}
+    // 檢查大小 (2MB)
+    const maxSize = 2 * 1024 * 1024;
+
+    if(file.size > maxSize){
+
+        alert("圖片大小不能超過 2MB");
+
+        event.target.value = "";
+
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+        document.getElementById("avatarPreview").src = reader.result;
+
+        document.getElementById("previewBlock").style.display = "block";
+
+    }
+
+    reader.readAsDataURL(file);
+}
+
 </script>
 
 </body>

@@ -35,7 +35,7 @@ public class ProfileController {
 
         UsersEntity user =
                 usersRepository.findByUsername(username);
-
+        
         model.addAttribute("user", user);
 
         return "profile";
@@ -58,7 +58,30 @@ public class ProfileController {
 
         // 上傳圖片
         if(photo != null && !photo.isEmpty()){
+        	
+        	// 檢查檔案大小(2MB)
+        	if(photo.getSize() > 2 * 1024 * 1024) {
+        		
+        		return "redirect:/profile?error=size";
+        	}
+        	
+        	// 檢查檔案格式
+        	String contentType = photo.getContentType();
+        	String fileName2 = photo.getOriginalFilename().toLowerCase();
+        	
+        	if(contentType == null ||
+        	  (!contentType.equals("image/jpeg") &&
+		       !contentType.equals("image/png") &&
+		       !contentType.equals("image/jpg"))){
+        		  
+        		return "redirect:/profile?error=format";
+        	  }
+        	if(!(fileName2.endsWith(".jpg") ||
+    		     fileName2.endsWith(".jpeg") ||
+    		     fileName2.endsWith(".png"))) {
 
+        		    return "redirect:/profile?error=format";}
+        	
             String path = "C:\\upload\\";
 
             File dir = new File(path);
