@@ -30,8 +30,10 @@ public class UsersEntity {
 	private String role;
 
 	// Email驗證
+	@Column(name = "verified")
 	private Boolean verified = false;
-	
+
+	@Column(name = "verification_token")
 	private String verificationToken;
 	
 	public String getAvatarUrl(){

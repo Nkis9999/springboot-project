@@ -17,7 +17,7 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
 	Page<UsersEntity> findByUsernameContaining(String username,Pageable pageable);
 	
 	UsersEntity findByUsername(String username);
-
-//	UsersEntity findByEmail(String email);
 	
+	UsersEntity findByVerificationToken(String token);
+
 }

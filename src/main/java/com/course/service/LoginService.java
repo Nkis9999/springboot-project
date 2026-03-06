@@ -1,5 +1,7 @@
 package com.course.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -82,10 +84,16 @@ public class LoginService {
 	    // Email 驗證預設
 	    user.setVerified(false);
 	    
+	    // 產生驗證 token
+	    String token = UUID.randomUUID().toString();
+	    user.setVerificationToken(token);
+	    
 	    // 設定預設頭像
 	    user.setImgName("default-avatar.png");
 	    
 	    usersRepository.save(user);
+	    
+	    String verifyLink = "http://localhost:8080/verify?token=" + token;
 	    
 	    // 寄驗證信
 	    emailService.sendEmail(
