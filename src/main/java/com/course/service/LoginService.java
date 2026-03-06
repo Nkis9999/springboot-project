@@ -1,5 +1,6 @@
 package com.course.service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,7 @@ public class LoginService {
 	    // 產生驗證 token
 	    String token = UUID.randomUUID().toString();
 	    user.setVerificationToken(token);
+	    user.setTokenExpireTime(LocalDateTime.now().plusHours(1));
 	    
 	    // 設定預設頭像
 	    user.setImgName("default-avatar.png");
@@ -116,5 +118,22 @@ public class LoginService {
 		usersRepository.save(user);
 		
 	}
+	
+	public boolean verifyEmail(String token) {
+		
+		UsersEntity user = usersRepository.findByVerificationToken(token);
+		
+		if(user == null) {
+			return false;
+		}
+		
+		user.setVerified(true);
+		user.setVerificationToken(null);
+		
+		usersRepository.save(user);
+		
+		return true;
+	}
+	
 	
 }
